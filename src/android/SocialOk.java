@@ -34,6 +34,8 @@ import ru.ok.android.sdk.util.OkScope;
 import ru.ok.android.sdk.util.OkDevice;
 import ru.ok.android.sdk.util.OkAuthType;
 
+import static ru.ok.android.sdk.OkRequestMode.SIGNED;
+
 public class SocialOk extends CordovaPlugin {
     private static final String TAG = "SocialOk";
     private static final String ACTION_INIT = "initSocialOk";
@@ -240,12 +242,7 @@ public class SocialOk extends CordovaPlugin {
         mAppId = appId;
         mAppKey = key;
         //odnoklassnikiObject = Odnoklassniki.createInstance(webView.getContext(), appId, key);
-        odnoklassnikiObject = new Odnoklassniki(webView.getContext(), appId, key) {
-            {
-                allowWidgetRetry = false;
-                sOdnoklassniki = this;
-            }
-        };
+        odnoklassnikiObject = Odnoklassniki.createInstance(webView.getContext(), appId, key);
         success("ok", context);
         return true;
     }
@@ -255,7 +252,7 @@ public class SocialOk extends CordovaPlugin {
         new AsyncTask<String, Void, String>() {
             @Override protected String doInBackground(String... args) {
                 try {
-                    return odnoklassnikiObject.request("users.getCurrentUser", null, null);
+                    return odnoklassnikiObject.request("users.getCurrentUser", null, EnumSet.of(SIGNED));
                 } catch (IOException e) {
                     e.printStackTrace();
                     fail("OK login error:" + e, callbackContext);
@@ -345,7 +342,7 @@ public class SocialOk extends CordovaPlugin {
         new AsyncTask<String, Void, String>() {
             @Override protected String doInBackground(String... args) {
                 try {
-                    return odnoklassnikiObject.request("share.addLink", params, null);
+                    return odnoklassnikiObject.request("share.addLink", params, EnumSet.of(SIGNED));
                 } catch (IOException e) {
                     e.printStackTrace();
                     fail("Error", callbackContext);
@@ -389,7 +386,7 @@ public class SocialOk extends CordovaPlugin {
         new AsyncTask<String, Void, String>() {
             @Override protected String doInBackground(String... args) {
                 try {
-                    return odnoklassnikiObject.request(method, params, null);
+                    return odnoklassnikiObject.request(method, params, EnumSet.of(SIGNED));
                 } catch (Exception e) {
                     fail(e.toString(), context);
                 }

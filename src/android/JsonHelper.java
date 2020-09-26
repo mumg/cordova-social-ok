@@ -7,32 +7,6 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class JsonHelper {
-    public static Object toJSON(Object object) throws JSONException {
-        if (object instanceof Map) {
-            JSONObject json = new JSONObject();
-            Map map = (Map) object;
-            for (Object key : map.keySet()) {
-                json.put(key.toString(), toJSON(map.get(key)));
-            }
-            return json;
-        } else if (object instanceof Iterable) {
-            JSONArray json = new JSONArray();
-            for (Object value : ((Iterable)object)) {
-                json.put(value);
-            }
-            return json;
-        } else {
-            return object;
-        }
-    }
-
-    public static boolean isEmptyObject(JSONObject object) {
-        return object.names() == null;
-    }
-
-    public static HashMap<String, String> getMap(JSONObject object, String key) throws JSONException {
-        return toMap(object.getJSONObject(key));
-    }
 
     public static HashMap<String, String> toMap(JSONObject object) throws JSONException {
         HashMap<String, String> map = new HashMap();

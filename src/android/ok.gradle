@@ -1,0 +1,1 @@
+dependencies { compile 'ru.ok:odnoklassniki-android-sdk:2.0.3' }
